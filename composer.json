@@ -1,0 +1,29 @@
+{
+    "name": "schoppax/gel-php",
+    "description": "GEL API v1.9 PHP 5.4+ library",
+    "keywords": [
+        "php",
+        "gel",
+        "api"
+    ],
+    "authors": [
+        {
+            "name": "mehrWEB.net",
+            "email": "mail@mehrWEB.net"
+        },
+        {
+            "name": "Axel Schoppe",
+            "email": "axel@mehrWEB.net"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0",
+        "guzzlehttp/guzzle": "~6.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "mehrWEBnet\\GEL\\": "src/"
+        }
+    },
+    "minimum-stability": "dev"
+}
