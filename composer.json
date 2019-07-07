@@ -22,7 +22,7 @@
     },
     "autoload": {
         "psr-4": {
-            "mehrWEBnet\\GEL\\": "src/"
+            "mehrWEBnet\\Gel\\": "src/"
         }
     },
     "minimum-stability": "dev"
