@@ -22,17 +22,17 @@ abstract class Api implements ApiInterface
 
     public function get($uri = null, $parameters = [])
     {
-        return json_decode($this->execute('get', $uri, $parameters)->getBody(), true);
+        return $this->xmlToArray($this->execute('get', $uri, $parameters, $body)->getBody());
     }
 
     public function post($uri = null, $parameters = [], $body = [])
     {
-        return json_decode($this->execute('post', $uri, $parameters, $body)->getBody(), true);
+        return $this->xmlToArray($this->execute('post', $uri, $parameters, $body)->getBody());
     }
 
     public function delete($uri = null, $parameters = [], $body = [])
     {
-        return json_decode($this->execute('delete', $uri, $parameters, $body)->getBody(), true);
+        return $this->xmlToArray($this->execute('delete', $uri, $parameters, $body)->getBody());
     }
 
     public function execute($httpMethod, $uri, array $parameters = [], array $body = [])
@@ -40,12 +40,19 @@ abstract class Api implements ApiInterface
         $client = $this->getClient();
         return $client->{$httpMethod}("{$uri}", [
             'query'       => $parameters,
-            'json' => $client->getAuthentication() + $body
+            'form_params' => $client->getAuthentication() + $body
         ]);
     }
 
     protected function getClient()
     {
         return new Client($this->apiKey, $this->depotNr, $this->knr, $this->test);
+    }
+    
+    protected function xmlToArray($xmlString)
+    {
+        $xml = simplexml_load_string($xmlString, "SimpleXMLElement", LIBXML_NOCDATA);
+		$json = json_encode($xml);
+		return json_decode($json, true);
     }
 }
