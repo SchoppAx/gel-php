@@ -20,27 +20,26 @@ abstract class Api implements ApiInterface
         $this->test = $test;
     }
 
-    public function get($uri = null, $parameters = [])
+    public function get($uri = null, $parameters = [], $knrpos = 0)
     {
-        return $this->xmlToArray($this->execute('get', $uri, $parameters, $body)->getBody());
+        return $this->xmlToArray($this->execute('get', $uri, $parameters, $knrpos)->getBody());
     }
 
-    public function post($uri = null, $parameters = [], $body = [])
+    public function post($uri = null, $parameters = [], $knrpos = 0)
     {
-        return $this->xmlToArray($this->execute('post', $uri, $parameters, $body)->getBody());
+        return $this->xmlToArray($this->execute('post', $uri, $parameters, $knrpos)->getBody());
     }
 
-    public function delete($uri = null, $parameters = [], $body = [])
+    public function delete($uri = null, $parameters = [], $knrpos = 0)
     {
-        return $this->xmlToArray($this->execute('delete', $uri, $parameters, $body)->getBody());
+        return $this->xmlToArray($this->execute('delete', $uri, $parameters, $knrpos)->getBody());
     }
 
-    public function execute($httpMethod, $uri, array $parameters = [], array $body = [])
+    public function execute($httpMethod, $uri, array $parameters = [], $knrpos = 0)
     {
         $client = $this->getClient();
         return $client->{$httpMethod}("{$uri}", [
-            'query'       => $parameters,
-            'form_params' => $client->getAuthentication() + $body
+            'query'       => $client->getAuthentication($knrpos) + $parameters
         ]);
     }
 

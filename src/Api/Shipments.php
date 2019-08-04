@@ -4,32 +4,32 @@ namespace mehrWEBnet\Gel\Api;
 
 class Shipments extends Api
 {
-    public function create($body, $parameters = [])
+    public function create($parameters, $knrpos = 0)
     {
-        $body = [ 'function' => 'create' ] + $body;
-        return $this->post('', $parameters, $body);
+        $parameters = [ 'function' => 'create' ] + $parameters;
+        return $this->post('', $parameters, $knrpos);
     }
 
-    public function modify($snr, $body)
+    public function modify($snr, $parameters, $knrpos = 0)
     {
-        $body = [ 'function' => 'modify', 'snr' => $snr ] + $body;
-        return $this->post('', [], $body);
+        $parameters = [ 'function' => 'modify', 'snr' => $snr ] + $parameters;
+        return $this->post('', $parameters, $knrpos);
     }
 
-    public function remove($snr)
+    public function remove($snr, $knrpos = 0)
     {
-        $body = [ 'function' => 'delete', 'snr' => $snr ];
-        return $this->post('', [], $body);
+        $parameters = [ 'function' => 'delete', 'snr' => $snr ];
+        return $this->post('', $parameters, $knrpos);
     }
 
-    public function export($snr, $load)
+    public function export($snr, $load, $knrpos = 0)
     {
-        $body = [ 'function' => 'export', 'snr' => $snr, 'load' => $load ];
-        return $this->post('', [], $body);
+        $parameters = [ 'function' => 'export', 'snr' => $snr, 'load' => $load ];
+        return $this->post('', $parameters, $knrpos);
     }
 
-    public function setstatus($snr, $load)
+    public function setstatus($snr, $load, $knrpos = 0)
     {
-        return $this->export($snr, $load);
+        return $this->export($snr, $load, $knrpos);
     }
 }

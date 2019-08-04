@@ -4,9 +4,9 @@ namespace mehrWEBnet\Gel\Api;
 
 class ShipmentQuotes extends Api
 {
-    public function create($body, $parameters = [])
+    public function create($parameters, $knrpos = 0)
     {
-        $body = [ 'function' => 'calculate' ] + $body;
-        return $this->post('', $parameters, $body);
+        $parameters = [ 'function' => 'calculate' ] + $parameters;
+        return $this->post('', $parameters, $knrpos);
     }
 }

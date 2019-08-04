@@ -24,16 +24,18 @@ class Client extends \GuzzleHttp\Client implements ClientInterface
         parent::__construct([
             'base_uri' => 'https://www.service.equicon.de/' . $interface . '/api/import',
             'headers' => [
-                'Content-Type' => 'Content-Type: application/x-www-form-urlencoded'
+                'Content-Type' => 'application/x-www-form-urlencoded'
             ]
         ]);
     }
 
-    public function getAuthentication() {
+    public function getAuthentication($pos = 0) {
+      $knr = is_array($this->knr) ? $this->knr[$pos] : $this->knr;
+    	
       return [
         'key' => $this->apiKey,
         'depot' => $this->depotNr,
-        'knr' => $this->knr
+        'knr' => $knr
       ];
     }
 
