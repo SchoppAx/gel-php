@@ -27,7 +27,7 @@ class Gel
         $class = "\\mehrWEBnet\\Gel\\Api\\".ucwords($method);
 
         if (class_exists($class)) {
-            return new $class($this->apiKey, $this->depotNr, $this->knr);
+            return new $class($this->apiKey, $this->depotNr, $this->knr, $this->test);
         }
         throw new \BadMethodCallException("Undefined method [{$method}] called.");
     }
