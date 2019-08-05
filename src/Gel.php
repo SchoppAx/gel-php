@@ -4,16 +4,17 @@ namespace mehrWEBnet\Gel;
 
 class Gel
 {
-    public function __construct($apiKey = null, $depotNr = null, $knr = null)
+    public function __construct($apiKey = null, $depotNr = null, $knr = null, $test = false)
     {
         $this->apiKey = $apiKey;
         $this->depotNr = $depotNr;
         $this->knr = $knr;
+        $this->test = $test;
     }
 
-    public static function make($apiKey = null, $depotNr = null, $knr = null)
+    public static function make($apiKey = null, $depotNr = null, $knr = null, $test = false)
     {
-        return new static($apiKey, $depotNr, $knr);
+        return new static($apiKey, $depotNr, $knr, $test);
     }
 
     public function __call($method, array $parameters = [])
