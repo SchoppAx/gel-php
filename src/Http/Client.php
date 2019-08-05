@@ -19,7 +19,7 @@ class Client extends \GuzzleHttp\Client implements ClientInterface
         $this->depotNr = $depotNr;
         $this->knr = $knr;
 
-        $interface = $test ? 'gel' : 'geltest';
+        $interface = $test ? 'geltest' : 'gel';
 
         parent::__construct([
             'base_uri' => 'https://www.service.equicon.de/' . $interface . '/api/import',
