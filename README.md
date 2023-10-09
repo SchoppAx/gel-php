@@ -1,6 +1,6 @@
 (in development)
 
-# gel-php - gel API v1.9 20190104 PHP 5.4+ library
+# gel-php - gel API v2.0 PHP 7.2+ library
 
 An easy-to-use PHP package to communicate with [gel's API].
 
