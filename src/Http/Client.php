@@ -2,9 +2,6 @@
 
 namespace mehrWEBnet\Gel\Http;
 
-use GuzzleHttp\Query;
-use GuzzleHttp\Event\BeforeEvent;
-use GuzzleHttp\Exception\ClientException;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
@@ -30,14 +27,15 @@ class Client extends \GuzzleHttp\Client implements ClientInterface
         ]);
     }
 
-    public function getAuthentication($pos = 0) {
-      $knr = is_array($this->knr) ? $this->knr[$pos] : $this->knr;
-    	
-      return [
-        'key' => $this->apiKey,
-        'depot' => $this->depotNr,
-        'knr' => $knr
-      ];
+    public function getAuthentication($pos = 0): array
+    {
+        $knr = is_array($this->knr) ? $this->knr[$pos] : $this->knr;
+        
+        return [
+            'key' => $this->apiKey,
+            'depot' => $this->depotNr,
+            'knr' => $knr
+        ];
     }
 
     public function send(RequestInterface $request, array $options = []): ResponseInterface

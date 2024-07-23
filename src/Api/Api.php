@@ -3,16 +3,16 @@
 namespace mehrWEBnet\Gel\Api;
 
 use mehrWEBnet\Gel\Http\Client;
-use mehrWEBnet\Gel\ConfigInterface;
+use Psr\Http\Message\ResponseInterface;
 
 abstract class Api implements ApiInterface
 {
-    protected $apiKey;
-    protected $depotNr;
-    protected $knr;
-    protected $test;
+    protected string $apiKey;
+    protected int $depotNr;
+    protected int $knr;
+    protected bool $test;
 
-    public function __construct($apiKey, $depotNr, $knr, $test = false)
+    public function __construct(string $apiKey, int $depotNr, int $knr, bool $test = false)
     {
         $this->apiKey = $apiKey;
         $this->depotNr = $depotNr;
@@ -20,38 +20,41 @@ abstract class Api implements ApiInterface
         $this->test = $test;
     }
 
-    public function get($uri = null, $parameters = [], $knrpos = 0)
+    public function get(string $uri = null, array $parameters = [], int $knrpos = 0): mixed
     {
-        return $this->xmlToArray($this->execute('get', $uri, $parameters, $knrpos)->getBody());
+        $body = (string) $this->execute('get', $uri, $parameters, $knrpos)->getBody();
+        return $this->xmlToArray($body);
     }
 
-    public function post($uri = null, $parameters = [], $knrpos = 0)
+    public function post(string $uri = null, array $parameters = [], int $knrpos = 0): mixed
     {
-        return $this->xmlToArray($this->execute('post', $uri, $parameters, $knrpos)->getBody());
+        $body = (string) $this->execute('post', $uri, $parameters, $knrpos)->getBody();
+        return $this->xmlToArray($body);
     }
 
-    public function delete($uri = null, $parameters = [], $knrpos = 0)
+    public function delete(string $uri = null, array $parameters = [], int $knrpos = 0): mixed
     {
-        return $this->xmlToArray($this->execute('delete', $uri, $parameters, $knrpos)->getBody());
+        $body = (string) $this->execute('delete', $uri, $parameters, $knrpos)->getBody();
+        return $this->xmlToArray($body);
     }
 
-    public function execute($httpMethod, $uri, array $parameters = [], $knrpos = 0)
+    public function execute(string $httpMethod, string $uri, array $parameters = [], int $knrpos = 0): ResponseInterface
     {
         $client = $this->getClient();
         return $client->{$httpMethod}("{$uri}", [
-            'query'       => $client->getAuthentication($knrpos) + $parameters
+            'query' => $client->getAuthentication($knrpos) + $parameters
         ]);
     }
 
-    protected function getClient()
+    protected function getClient(): Client
     {
         return new Client($this->apiKey, $this->depotNr, $this->knr, $this->test);
     }
     
-    protected function xmlToArray($xmlString)
+    protected function xmlToArray(string $xmlString): mixed
     {
         $xml = simplexml_load_string($xmlString, "SimpleXMLElement", LIBXML_NOCDATA);
-		$json = json_encode($xml);
-		return json_decode($json, true);
+        $json = json_encode($xml);
+        return json_decode($json, true);
     }
 }

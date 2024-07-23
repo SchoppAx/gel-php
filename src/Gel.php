@@ -2,9 +2,17 @@
 
 namespace mehrWEBnet\Gel;
 
+use mehrWEBnet\Gel\Api\ShipmentQuotes;
+use mehrWEBnet\Gel\Api\Shipments;
+
 class Gel
 {
-    public function __construct($apiKey = null, $depotNr = null, $knr = null, $test = false)
+    private string $apiKey;
+    private int $depotNr;
+    private int $knr;
+    private bool $test;
+
+    public function __construct(string $apiKey = null, int $depotNr = null, int $knr = null, bool $test = false)
     {
         $this->apiKey = $apiKey;
         $this->depotNr = $depotNr;
@@ -12,17 +20,30 @@ class Gel
         $this->test = $test;
     }
 
-    public static function make($apiKey = null, $depotNr = null, $knr = null, $test = false)
+    public static function make(string $apiKey = null, int $depotNr = null, int $knr = null, bool $test = false): Gel
     {
         return new static($apiKey, $depotNr, $knr, $test);
     }
 
-    public function __call($method, array $parameters = [])
+    /**
+     * @param string $method
+     * @param array  $parameters
+     *
+     * @return Shipments|ShipmentQuotes
+     */
+    public function __call(string $method, array $parameters = [])
     {
         return $this->getApiInstance($method);
     }
 
-    protected function getApiInstance($method)
+    /**
+     * Get class
+     *
+     * @param string $method Api method to call
+     * @return Shipments|ShipmentQuotes
+     * @throws BadMethodCallException
+     */
+    protected function getApiInstance(string $method)
     {
         $class = "\\mehrWEBnet\\Gel\\Api\\".ucwords($method);
 
