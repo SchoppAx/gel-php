@@ -1,6 +1,6 @@
 {
     "name": "schoppax/gel-php",
-    "description": "GEL API v1.9 PHP 7.2+ library",
+    "description": "GEL API v3 PHP 7.2+ library",
     "keywords": [
         "php",
         "gel",
@@ -25,7 +25,6 @@
             "mehrWEBnet\\Gel\\": "src/"
         }
     },
-    "minimum-stability": "dev",
     "scripts": {
         "start": [
             "php -S localhost:8080"
