@@ -9,10 +9,10 @@ abstract class Api implements ApiInterface
 {
     protected string $apiKey;
     protected int $depotNr;
-    protected int $knr;
+    protected int|array $knr;
     protected bool $test;
 
-    public function __construct(string $apiKey, int $depotNr, int $knr, bool $test = false)
+    public function __construct(string $apiKey, int $depotNr, int|array $knr, bool $test = false)
     {
         $this->apiKey = $apiKey;
         $this->depotNr = $depotNr;

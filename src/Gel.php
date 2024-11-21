@@ -9,10 +9,10 @@ class Gel
 {
     private string $apiKey;
     private int $depotNr;
-    private int $knr;
+    private int|array $knr;
     private bool $test;
 
-    public function __construct(string $apiKey = null, int $depotNr = null, int $knr = null, bool $test = false)
+    public function __construct(string $apiKey = null, int $depotNr = null, int|array $knr = null, bool $test = false)
     {
         $this->apiKey = $apiKey;
         $this->depotNr = $depotNr;
@@ -20,7 +20,7 @@ class Gel
         $this->test = $test;
     }
 
-    public static function make(string $apiKey = null, int $depotNr = null, int $knr = null, bool $test = false): Gel
+    public static function make(string $apiKey = null, int $depotNr = null, int|array $knr = null, bool $test = false): Gel
     {
         return new static($apiKey, $depotNr, $knr, $test);
     }
