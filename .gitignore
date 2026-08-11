@@ -1,4 +1,19 @@
-/vendor
-composer.phar
+# Composer
+/vendor/
+/composer.lock
+
+# PHP
+.phpunit.result.cache
+.phpunit.cache/
+coverage.xml
+
+# IDE / editor
+.vscode/
+.idea/
+
+# OS files
 .DS_Store
-.phpintel
+Thumbs.db
+
+# Logs
+*.log
