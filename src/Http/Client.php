@@ -1,17 +1,21 @@
 <?php
 
+declare(strict_types=1);
+
 namespace mehrWEBnet\Gel\Http;
 
+use GuzzleHttp\Client as GuzzleClient;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
-class Client extends \GuzzleHttp\Client implements ClientInterface
+class Client implements ClientInterface
 {
-    protected $apiKey;
-    protected $depotNr;
-    protected $knr;
+    private string $apiKey;
+    private int $depotNr;
+    private int|array $knr;
+    private GuzzleClient $httpClient;
 
-    public function __construct($apiKey, $depotNr, $knr, $test)
+    public function __construct(string $apiKey, int $depotNr, int|array $knr, bool $test)
     {
         $this->apiKey = $apiKey;
         $this->depotNr = $depotNr;
@@ -19,27 +23,32 @@ class Client extends \GuzzleHttp\Client implements ClientInterface
 
         $interface = $test ? 'geltest' : 'gel';
 
-        parent::__construct([
-            'base_uri' => 'https://www.service.equicon.de/' . $interface . '/api/import',
+        $this->httpClient = new GuzzleClient([
+            'base_uri' => sprintf('https://www.service.equicon.de/%s/api/import', $interface),
             'headers' => [
-                'Content-Type' => 'application/x-www-form-urlencoded'
-            ]
+                'Content-Type' => 'application/x-www-form-urlencoded',
+            ],
         ]);
     }
 
-    public function getAuthentication($pos = 0): array
+    public function getAuthentication(int $pos = 0): array
     {
-        $knr = is_array($this->knr) ? $this->knr[$pos] : $this->knr;
-        
+        $knr = is_array($this->knr) ? ($this->knr[$pos] ?? null) : $this->knr;
+
         return [
             'key' => $this->apiKey,
             'depot' => $this->depotNr,
-            'knr' => $knr
+            'knr' => $knr,
         ];
     }
 
     public function send(RequestInterface $request, array $options = []): ResponseInterface
     {
-        return parent::send($request, $options);
+        return $this->httpClient->send($request, $options);
+    }
+
+    public function __call(string $method, array $arguments): mixed
+    {
+        return $this->httpClient->{$method}(...$arguments);
     }
 }

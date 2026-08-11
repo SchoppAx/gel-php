@@ -1,18 +1,21 @@
 <?php
 
+declare(strict_types=1);
+
 namespace mehrWEBnet\Gel;
 
+use BadMethodCallException;
 use mehrWEBnet\Gel\Api\ShipmentQuotes;
 use mehrWEBnet\Gel\Api\Shipments;
 
 class Gel
 {
     private string $apiKey;
-    private int $depotNr;
-    private int|array $knr;
+    private ?int $depotNr;
+    private int|array|null $knr;
     private bool $test;
 
-    public function __construct(string $apiKey = null, int $depotNr = null, int|array $knr = null, bool $test = false)
+    public function __construct(string $apiKey, ?int $depotNr = null, int|array|null $knr = null, bool $test = false)
     {
         $this->apiKey = $apiKey;
         $this->depotNr = $depotNr;
@@ -20,36 +23,30 @@ class Gel
         $this->test = $test;
     }
 
-    public static function make(string $apiKey = null, int $depotNr = null, int|array $knr = null, bool $test = false): Gel
+    public static function make(string $apiKey, ?int $depotNr = null, int|array|null $knr = null, bool $test = false): self
     {
-        return new static($apiKey, $depotNr, $knr, $test);
+        return new self($apiKey, $depotNr, $knr, $test);
     }
 
-    /**
-     * @param string $method
-     * @param array  $parameters
-     *
-     * @return Shipments|ShipmentQuotes
-     */
-    public function __call(string $method, array $parameters = [])
+    public function shipments(): Shipments
     {
-        return $this->getApiInstance($method);
+        return $this->getApiInstance('shipments');
     }
 
-    /**
-     * Get class
-     *
-     * @param string $method Api method to call
-     * @return Shipments|ShipmentQuotes
-     * @throws BadMethodCallException
-     */
-    protected function getApiInstance(string $method)
+    public function shipmentQuotes(): ShipmentQuotes
     {
-        $class = "\\mehrWEBnet\\Gel\\Api\\".ucwords($method);
+        return $this->getApiInstance('shipmentQuotes');
+    }
 
-        if (class_exists($class)) {
-            return new $class($this->apiKey, $this->depotNr, $this->knr, $this->test);
+    protected function getApiInstance(string $method): Shipments|ShipmentQuotes
+    {
+        $className = str_replace(' ', '', ucwords(str_replace(['-', '_'], ' ', $method)));
+        $class = sprintf('\\mehrWEBnet\\Gel\\Api\\%s', $className);
+
+        if (!class_exists($class)) {
+            throw new BadMethodCallException("Undefined method [{$method}] called.");
         }
-        throw new \BadMethodCallException("Undefined method [{$method}] called.");
+
+        return new $class($this->apiKey, $this->depotNr, $this->knr, $this->test);
     }
 }
