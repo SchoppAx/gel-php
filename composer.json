@@ -1,6 +1,6 @@
 {
     "name": "schoppax/gel-php",
-    "description": "GEL API v3 PHP 7.2+ library",
+    "description": "GEL API v3 library for modern PHP",
     "keywords": [
         "php",
         "gel",
@@ -17,7 +17,7 @@
         }
     ],
     "require": {
-        "php": ">=7.2.0",
+        "php": ">=8.2.0",
         "guzzlehttp/guzzle": "~7.0"
     },
     "autoload": {
@@ -28,6 +28,16 @@
     "scripts": {
         "start": [
             "php -S localhost:8080"
+        ],
+        "test": [
+            "phpunit --configuration phpunit.xml"
+        ],
+        "analyse": [
+            "phpstan analyse -c phpstan.neon --no-progress"
         ]
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^13.3",
+        "phpstan/phpstan": "^2.2"
     }
 }
