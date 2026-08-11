@@ -1,7 +1,9 @@
 
-# gel-php - gel API v3 PHP 7.2+ library
+# gel-php - gel API v3 PHP 8.2+ library
 
 An easy-to-use PHP package to communicate with [gel's API].
+
+[![Coverage](https://img.shields.io/badge/coverage-100%25-brightgreen)](https://github.com/schoppax/gel-php/actions)
 
 ### Installation
 
