@@ -8,6 +8,9 @@ use GuzzleHttp\Client as GuzzleClient;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
+/**
+ * @method ResponseInterface get(string $uri, array $options = [])
+ */
 class Client implements ClientInterface
 {
     private string $apiKey;
