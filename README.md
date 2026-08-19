@@ -46,7 +46,7 @@ try {
         'srv'       => '2',
         'xsrv>'     => 'A',
         'collicnt'  => 'int',
-        'colli'     => '|weight|length|width|height', // in cm
+        'colli'     => ['|weight|length|width|height'], // in cm
         'avis'      => 'phone',
         'atype'    => 'A3',
         'email'    => 'mail',

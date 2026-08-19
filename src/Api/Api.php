@@ -46,7 +46,25 @@ abstract class Api implements ApiInterface
         $client = $this->getClient();
         $query = $client->getAuthentication($knrpos) + $parameters;
 
-        return $client->{$httpMethod}($uri, ['query' => $query]);
+        return $client->{$httpMethod}($uri, ['query' => $this->buildQuery($query)]);
+    }
+
+    private function buildQuery(array $parameters): string
+    {
+        $query = [];
+
+        foreach ($parameters as $key => $value) {
+            if ($key === 'colli' && is_array($value)) {
+                foreach ($value as $colli) {
+                    $query[] = rawurlencode($key) . '=' . (string) $colli;
+                }
+                continue;
+            }
+
+            $query[] = http_build_query([$key => $value], '', '&', PHP_QUERY_RFC3986);
+        }
+
+        return implode('&', $query);
     }
 
     protected function getClient(): Client
